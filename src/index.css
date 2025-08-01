@@ -2,38 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Enhanced sticky navigation */
+/* Enhanced navigation - stays in place, not sticky */
 .sticky-nav {
-  position: sticky;
-  top: 88px;
+  position: static;
   z-index: 40;
   will-change: transform;
   /* Ensure smooth scrolling behavior */
   transition: all 0.2s ease-out;
 }
 
-/* Ensure proper stacking context */
+/* Ensure proper stacking context - header stays in place, not sticky */
 .sticky-header {
-  position: sticky;
-  top: 0;
+  position: static;
   z-index: 50;
   will-change: transform;
   /* Ensure smooth scrolling behavior */
   transition: all 0.2s ease-out;
 }
 
-/* Ensure sticky elements work on all browsers */
+/* Ensure elements work on all browsers */
 .sticky-nav,
 .sticky-header {
-  -webkit-position: sticky;
-  position: sticky;
-}
-
-/* Responsive adjustments for mobile */
-@media (max-width: 768px) {
-  .sticky-nav {
-    top: 80px; /* Slightly smaller top offset for mobile */
-  }
+  -webkit-position: static;
+  position: static;
 }
 
 /* Modern UI Animations */
