@@ -108,7 +108,7 @@ const optimizeSessionDistribution = (task: Task, totalHours: number, daysForTask
   // For one-time tasks, return a single session with all hours
   // Note: Scheduling timing is handled in the distribution loop:
   // - High-impact one-sitting tasks: scheduled early (maximum priority)
-  // - Regular one-sitting tasks: scheduled closer to deadline (respect user timing)
+  // - Regular one-sitting tasks: scheduled on deadline day itself (respect user timing)
   if (task.isOneTimeTask) {
     return [totalHours];
   }
@@ -918,11 +918,20 @@ export const generateNewStudyPlan = (
         for (let i = 0; i < sessionLengths.length && i < daysForTask.length; i++) {
           let dayIndex = i;
           
-          // For non-important one-sitting tasks, prefer scheduling closer to deadline
+          // For non-important one-sitting tasks, prefer scheduling on or near the deadline day
           if (task.isOneTimeTask && !task.importance && sessionLengths.length === 1) {
-            // Try to schedule in the latter half of available days (60% through timeline)
-            const preferredStartIndex = Math.floor(daysForTask.length * 0.6);
-            dayIndex = Math.min(preferredStartIndex + i, daysForTask.length - 1);
+            // First try to schedule on the actual deadline day (ignoring buffer days for one-sitting tasks)
+            const actualDeadline = new Date(task.deadline);
+            const actualDeadlineDateStr = actualDeadline.toISOString().split('T')[0];
+            const actualDeadlineIndex = daysForTask.findIndex(d => d === actualDeadlineDateStr);
+            
+            if (actualDeadlineIndex !== -1) {
+              // Schedule on the actual deadline day if it's available
+              dayIndex = actualDeadlineIndex;
+            } else {
+              // Fallback: schedule on the last available day (closest to deadline)
+              dayIndex = daysForTask.length - 1;
+            }
           }
           
           const date = daysForTask[dayIndex];

@@ -362,11 +362,11 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel }) => {
                   <div className="mt-1 p-2 bg-blue-50 dark:bg-blue-900/20 rounded border-l-2 border-blue-300 dark:border-blue-600">
                     <div className="text-xs text-blue-700 dark:text-blue-300">
                       <strong>📅 Scheduling Note:</strong>
-                      {formData.impact === 'high' ? (
-                        <span> High-impact one-sitting tasks are scheduled as early as possible for maximum priority.</span>
-                      ) : (
-                        <span> Regular one-sitting tasks are scheduled closer to their deadline to respect your timing preference.</span>
-                      )}
+                                             {formData.impact === 'high' ? (
+                         <span> High-impact one-sitting tasks are scheduled as early as possible for maximum priority.</span>
+                       ) : (
+                         <span> Regular one-sitting tasks are scheduled on the deadline day itself (or the closest available day) to respect your timing preference.</span>
+                       )}
                     </div>
                   </div>
                 )}
@@ -932,10 +932,10 @@ const TaskInput: React.FC<TaskInputProps> = ({ onAddTask, onCancel }) => {
                   </div>
                   <div className="text-sm">
                     <strong>One-time tasks</strong> maintain their importance level but are scheduled as single, uninterrupted sessions:
-                    <ul className="list-disc list-inside mt-1 ml-2 space-y-1">
-                      <li><strong>High-impact one-sitting tasks:</strong> Scheduled as early as possible for maximum priority</li>
-                      <li><strong>Regular one-sitting tasks:</strong> Scheduled closer to their deadline to respect your timing preference</li>
-                    </ul>
+                                         <ul className="list-disc list-inside mt-1 ml-2 space-y-1">
+                       <li><strong>High-impact one-sitting tasks:</strong> Scheduled as early as possible for maximum priority</li>
+                       <li><strong>Regular one-sitting tasks:</strong> Scheduled on the deadline day itself (or closest available day) to respect your timing preference</li>
+                     </ul>
                   </div>
                 </div>
               </div>
