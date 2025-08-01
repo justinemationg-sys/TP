@@ -23,7 +23,7 @@ export const DEFAULT_PERSONALIZATION: UserPersonalization = {
   },
   layout: {
     sidebarPosition: 'left',
-    navigationStyle: 'tabs',
+    navigationStyle: 'glass',
     dashboardLayout: 'grid',
     calendarView: 'week',
     showTaskProgress: true,
@@ -131,7 +131,7 @@ export const PERSONALIZATION_PRESETS: PersonalizationPreset[] = [
         animations: 'full' as const
       },
       layout: {
-        navigationStyle: 'tabs' as const,
+        navigationStyle: 'floating' as const,
         dashboardLayout: 'cards' as const,
         showStreakWidget: true,
         showQuickStats: true

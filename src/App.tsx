@@ -1794,107 +1794,110 @@ function App() {
                 </div>
 
                 <div className="min-h-screen relative">
-                {/* Glassmorphic Header */}
-                <header className="w-full flex items-center justify-between px-4 sm:px-6 py-4 backdrop-blur-md bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-white/10 z-40 sticky top-0">
-                    <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                            <span className="text-white font-bold text-lg">⚡</span>
-                        </div>
-                        <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">TimePilot</div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                        <button
-                            className={`flex items-center rounded-2xl p-3 backdrop-blur-md transition-all duration-300 z-50 ${
-                              hasUnscheduled ?
-                                notificationPriority === 'critical' ? 'bg-red-500/20 border border-red-300/50 shadow-lg shadow-red-500/25 animate-pulse' :
-                                notificationPriority === 'high' ? 'bg-orange-500/20 border border-orange-300/50 shadow-lg shadow-orange-500/25 animate-bounce' :
-                                'bg-yellow-500/20 border border-yellow-300/50 shadow-lg shadow-yellow-500/25'
-                              : 'bg-white/10 border border-white/20'
-                            } ${
-                              hasUnscheduled ?
-                                notificationPriority === 'critical' ? 'text-red-600 dark:text-red-400' :
-                                notificationPriority === 'high' ? 'text-orange-600 dark:text-orange-400' :
-                                'text-yellow-600 dark:text-yellow-400'
-                              : 'text-gray-400'
-                            } ${hasUnscheduled ? 'hover:scale-105' : 'opacity-60 pointer-events-none cursor-not-allowed'}`}
-                            title={showSuggestionsPanel ? 'Hide Study Plan Optimization' :
-                              hasUnscheduled ?
-                                `Show Study Plan Optimization (${unscheduledTasks.length} task${unscheduledTasks.length > 1 ? 's' : ''} need attention)` :
-                                'No optimization suggestions'
-                            }
-                            onClick={() => hasUnscheduled && setShowSuggestionsPanel(v => !v)}
-                            style={{ outline: 'none', border: 'none' }}
-                            disabled={!hasUnscheduled}
-                        >
-                            <Lightbulb className={`w-5 h-5 sm:w-6 sm:h-6`} fill={hasUnscheduled ?
-                              notificationPriority === 'critical' ? '#dc2626' :
-                              notificationPriority === 'high' ? '#ea580c' :
-                              '#fde047'
-                            : 'none'} />
-                        </button>
-                        <button
-                            className={`relative p-3 backdrop-blur-md border rounded-2xl transition-all duration-300 hover:scale-105 ${
-                                gamificationData.recentUnlocks.length > 0
-                                    ? 'bg-yellow-500/20 border-yellow-300/50 shadow-lg shadow-yellow-500/25 text-yellow-600 dark:text-yellow-400 animate-pulse'
-                                    : 'bg-white/10 dark:bg-black/10 border-white/20 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-white/5'
-                            }`}
-                            onClick={() => setShowGamificationPanel(!showGamificationPanel)}
-                            title={`Progress & Achievements${gamificationData.recentUnlocks.length > 0 ? ' (New!)' : ''}`}
-                        >
-                            <Trophy size={20} />
-                            {gamificationData.recentUnlocks.length > 0 && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
-                            )}
-                        </button>
-                        <button
-                            className="p-3 backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-white/5 transition-all duration-300 hover:scale-105"
-                            onClick={() => setShowHelpModal(true)}
-                            title="Help & FAQ"
-                        >
-                            <HelpCircle size={20} />
-                        </button>
-                        <button
-                            className="lg:hidden p-3 backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10 rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-white/5 transition-all duration-300 hover:scale-105"
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        >
-                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
-                    </div>
-                </header>
-
-                {/* Navigation */}
-                <nav className="backdrop-blur-md bg-white/90 dark:bg-gray-900/90 border-b border-gray-200/50 dark:border-gray-700/50">
+                {/* Unified Navbar */}
+<nav className={`w-full nav-${personalization.layout.navigationStyle} z-40 sticky top-0`}>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        {/* Desktop Navigation */}
-                        <div className="hidden lg:flex items-center justify-center space-x-1 py-3">
-                            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full p-1">
-                                {tabs.map((tab) => (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => {
-                                            setActiveTab(tab.id as typeof activeTab);
-                                            setMobileMenuOpen(false);
-                                        }}
-                                        className={`flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 relative ${
-                                            activeTab === tab.id
-                                                ? 'bg-violet-500 text-white shadow-lg shadow-violet-500/25'
-                                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-gray-700/50'
-                                        } ${showInteractiveTutorial && highlightedTab === tab.id ? 'ring-2 ring-yellow-400 animate-pulse' : ''}`}
-                                        title={tab.label}
-                                    >
-                                        <tab.icon size={18} />
-                                        {activeTab === tab.id && (
-                                            <span className="ml-2 hidden sm:inline">{tab.label}</span>
-                                        )}
-                                    </button>
-                                ))}
+                        {/* Main navbar content */}
+                        <div className="flex items-center justify-between py-4">
+                            {/* Logo section */}
+                            <div className="flex items-center space-x-3 navbar-logo">
+                                <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <span className="text-white font-bold text-lg">⚡</span>
+                                </div>
+                                <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">TimePilot</div>
+                            </div>
+
+                            {/* Desktop Navigation - Center */}
+                            <div className="hidden lg:flex items-center justify-center">
+                                <div className="flex items-center bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full p-1 border border-white/30 dark:border-gray-700/50">
+                                    {tabs.map((tab) => (
+                                        <button
+                                            key={tab.id}
+                                            onClick={() => {
+                                                setActiveTab(tab.id as typeof activeTab);
+                                                setMobileMenuOpen(false);
+                                            }}
+                                            className={`navbar-tab flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 relative ${
+                                                activeTab === tab.id
+                                                    ? 'bg-violet-500 text-white shadow-lg shadow-violet-500/25 navbar-active-tab'
+                                                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-white/70 dark:hover:bg-gray-700/70'
+                                            } ${showInteractiveTutorial && highlightedTab === tab.id ? 'ring-2 ring-yellow-400 animate-pulse' : ''}`}
+                                            title={tab.label}
+                                        >
+                                            <tab.icon size={18} />
+                                            {activeTab === tab.id && (
+                                                <span className="ml-2 hidden sm:inline">{tab.label}</span>
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Action buttons */}
+                            <div className="flex items-center space-x-2">
+                                <button
+                                    className={`flex items-center rounded-2xl p-3 backdrop-blur-sm transition-all duration-300 z-50 ${
+                                      hasUnscheduled ?
+                                        notificationPriority === 'critical' ? 'bg-red-500/20 border border-red-300/50 shadow-lg shadow-red-500/25 animate-pulse' :
+                                        notificationPriority === 'high' ? 'bg-orange-500/20 border border-orange-300/50 shadow-lg shadow-orange-500/25 animate-bounce' :
+                                        'bg-yellow-500/20 border border-yellow-300/50 shadow-lg shadow-yellow-500/25'
+                                      : 'bg-white/20 dark:bg-gray-800/30 border border-white/30 dark:border-gray-700/50'
+                                    } ${
+                                      hasUnscheduled ?
+                                        notificationPriority === 'critical' ? 'text-red-600 dark:text-red-400' :
+                                        notificationPriority === 'high' ? 'text-orange-600 dark:text-orange-400' :
+                                        'text-yellow-600 dark:text-yellow-400'
+                                      : 'text-gray-400'
+                                    } ${hasUnscheduled ? 'hover:scale-105' : 'opacity-60 pointer-events-none cursor-not-allowed'}`}
+                                    title={showSuggestionsPanel ? 'Hide Study Plan Optimization' :
+                                      hasUnscheduled ?
+                                        `Show Study Plan Optimization (${unscheduledTasks.length} task${unscheduledTasks.length > 1 ? 's' : ''} need attention)` :
+                                        'No optimization suggestions'
+                                    }
+                                    onClick={() => hasUnscheduled && setShowSuggestionsPanel(v => !v)}
+                                    style={{ outline: 'none', border: 'none' }}
+                                    disabled={!hasUnscheduled}
+                                >
+                                    <Lightbulb className={`w-5 h-5 sm:w-6 sm:h-6`} fill={hasUnscheduled ?
+                                      notificationPriority === 'critical' ? '#dc2626' :
+                                      notificationPriority === 'high' ? '#ea580c' :
+                                      '#fde047'
+                                    : 'none'} />
+                                </button>
+                                <button
+                                    className={`relative p-3 backdrop-blur-sm border rounded-2xl transition-all duration-300 hover:scale-105 ${
+                                        gamificationData.recentUnlocks.length > 0
+                                            ? 'bg-yellow-500/20 border-yellow-300/50 shadow-lg shadow-yellow-500/25 text-yellow-600 dark:text-yellow-400 animate-pulse'
+                                            : 'bg-white/20 dark:bg-gray-800/30 border-white/30 dark:border-gray-700/50 text-gray-600 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-gray-700/40'
+                                    }`}
+                                    onClick={() => setShowGamificationPanel(!showGamificationPanel)}
+                                    title={`Progress & Achievements${gamificationData.recentUnlocks.length > 0 ? ' (New!)' : ''}`}
+                                >
+                                    <Trophy size={20} />
+                                    {gamificationData.recentUnlocks.length > 0 && (
+                                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
+                                    )}
+                                </button>
+                                <button
+                                    className="p-3 backdrop-blur-sm bg-white/20 dark:bg-gray-800/30 border border-white/30 dark:border-gray-700/50 rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-gray-700/40 transition-all duration-300 hover:scale-105"
+                                    onClick={() => setShowHelpModal(true)}
+                                    title="Help & FAQ"
+                                >
+                                    <HelpCircle size={20} />
+                                </button>
+                                <button
+                                    className="lg:hidden p-3 backdrop-blur-sm bg-white/20 dark:bg-gray-800/30 border border-white/30 dark:border-gray-700/50 rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-white/30 dark:hover:bg-gray-700/40 transition-all duration-300 hover:scale-105"
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                >
+                                    {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                                </button>
                             </div>
                         </div>
 
                         {/* Mobile Navigation */}
                         <div className={`lg:hidden ${mobileMenuOpen ? 'block' : 'hidden'}`}>
-                            <div className="py-4">
-                                <div className="flex flex-wrap items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-2xl p-2">
+                            <div className="pb-4">
+                                <div className="flex flex-wrap items-center justify-center gap-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-2 border border-white/30 dark:border-gray-700/50">
                                     {tabs.map((tab) => (
                                         <button
                                             key={tab.id}
@@ -1905,7 +1908,7 @@ function App() {
                                             className={`flex items-center justify-center px-3 py-2 rounded-xl text-xs font-medium transition-all duration-300 ${
                                                 activeTab === tab.id
                                                     ? 'bg-violet-500 text-white shadow-lg shadow-violet-500/25'
-                                                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-gray-700/50'
+                                                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-white/70 dark:hover:bg-gray-700/70'
                                             } ${showInteractiveTutorial && highlightedTab === tab.id ? 'ring-2 ring-yellow-400 animate-pulse' : ''}`}
                                         >
                                             <tab.icon size={16} />

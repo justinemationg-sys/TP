@@ -19,7 +19,7 @@ export interface ThemeSettings {
 
 export interface LayoutSettings {
   sidebarPosition: 'left' | 'right' | 'top' | 'bottom';
-  navigationStyle: 'tabs' | 'sidebar' | 'pills' | 'minimal';
+  navigationStyle: 'tabs' | 'sidebar' | 'pills' | 'minimal' | 'glass' | 'solid' | 'floating';
   dashboardLayout: 'grid' | 'list' | 'cards' | 'compact';
   calendarView: 'week' | 'day' | 'month' | 'agenda';
   showTaskProgress: boolean;
